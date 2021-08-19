@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+   const [inputMessage, setInputMessage] = useState('')
+   const [messagesArray, setMessagesArray] = useState([])
+
+   const onSendMessage = () => {
+      setMessagesArray( prev => [...prev, inputMessage])
+      setInputMessage('')
+   }
+
+
+   return (
+      <div className = 'main-wrapper'>
+         <div 
+            className = 'message-list'>
+            { messagesArray.map((message, i) => (
+               <div key = { i }>{ message }</div>
+            )) }
+         </div>
+         <div className = 'input-wrapper'>
+            <textarea 
+               autoFocus
+               className = 'input' 
+               value = { inputMessage } 
+               onChange = { e => setInputMessage(e.target.value) }
+               onKeyDown = { ({key}) => { 
+                  if (key === 'Enter') {
+                     onSendMessage()
+                  }
+               }}></textarea>
+            <button 
+               className = 'send-btn'
+               onClick = { onSendMessage }>Отправить</button>
+         </div>
+      </div>
+   )
 }
 
 export default App;
